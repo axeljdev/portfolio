@@ -1,10 +1,11 @@
 ---
 import "../global.css";
+import ScrollIndicator from "./ScrollIndicator.astro";
 ---
 
 <section
   id="projects"
-  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[46rem] 4xl:px-[56rem]"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[40rem] 4xl:px-[50rem] project-section"
 >
   <div class="flex flex-col">
     <h2
@@ -224,6 +225,9 @@ import "../global.css";
 
 <style>
   /* Styles de base pour les éléments animés */
+  .project-section {
+    position: relative;
+  }
   .projects-title {
     opacity: 0;
     transform: translateY(30px);

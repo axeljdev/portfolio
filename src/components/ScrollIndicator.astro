@@ -1,0 +1,136 @@
+---
+export interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="scroll-indicator" id={id}>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M12 5L12 19M12 19L7 14M12 19L17 14"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+  <span class="scroll-text">Découvrir</span>
+</div>
+
+<script is:inline>
+  import { gsap } from "gsap";
+
+  (() => {
+    const scrollIndicator = document.getElementById("{id}");
+    const scrollIcon = scrollIndicator?.querySelector("svg");
+    const scrollText = scrollIndicator?.querySelector(".scroll-text");
+    if (!scrollIndicator || !scrollIcon || !scrollText) return;
+    // Animation de l'indicateur
+    const tl = gsap.timeline({ repeat: -1, delay: 2 });
+    tl.fromTo(
+      scrollText,
+      { opacity: 0.6 },
+      { opacity: 1, duration: 1.5, ease: "power2.inOut" }
+    )
+      .to(scrollText, { opacity: 0.6, duration: 1.5, ease: "power2.inOut" })
+      .fromTo(
+        scrollIcon,
+        { y: 0, opacity: 0.7 },
+        { y: 8, opacity: 1, duration: 1.2, ease: "power2.inOut" },
+        0
+      )
+      .to(scrollIcon, {
+        y: 0,
+        opacity: 0.7,
+        duration: 1.2,
+        ease: "power2.inOut",
+      })
+      .to({}, { duration: 0.8 });
+
+    // Trouver la section parente la plus proche
+    let parentSection = scrollIndicator.closest("section");
+    if (!parentSection) parentSection = scrollIndicator.parentElement;
+
+    // Observer la visibilité de la section
+    let isVisible = true;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.2) {
+            if (!isVisible) {
+              isVisible = true;
+              gsap.to(scrollIndicator, {
+                opacity: 0.7,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                display: "flex",
+              });
+            }
+          } else {
+            if (isVisible) {
+              isVisible = false;
+              gsap.to(scrollIndicator, {
+                opacity: 0,
+                y: 20,
+                duration: 0.8,
+                ease: "power2.out",
+                onComplete: () => {
+                  scrollIndicator.style.display = "none";
+                },
+              });
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    if (parentSection) {
+      observer.observe(parentSection);
+    }
+  })();
+</script>
+
+<style>
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  .scroll-indicator:hover {
+    opacity: 1;
+  }
+  .scroll-text {
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  .scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+  }
+  @media (max-width: 768px) {
+    .scroll-indicator {
+      bottom: 1.5rem;
+    }
+    .scroll-text {
+      font-size: 0.75rem;
+    }
+    .scroll-indicator svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+</style>

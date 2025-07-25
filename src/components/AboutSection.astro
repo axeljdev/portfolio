@@ -3,16 +3,17 @@ import Navbar from "./Navbar.astro";
 import "../global.css";
 ---
 
-<!-- Section A propos -->
-<section id="about" class="h-[100svh] md:h-[80svh] flex flex-col">
+<section id="about" class="h-[100svh] md:h-[80svh] flex flex-col relative">
   <Navbar />
   <div
     class="px-5 flex flex-col items-center justify-center flex-1 md:flex-row md:px-[28rem] 2xl:px-[30rem] 3xl:px-[40rem] 4xl:px-[50rem] md:gap-8"
   >
     <img
       src="/axel.png"
-      alt="Axel"
+      alt="Portrait d'Axel, développeur web"
       class="w-30 h-30 mb-6 rounded-full bg-primary md:mb-0 photo-entrance"
+      loading="lazy"
+      decoding="async"
     />
     <p class="font-body font-light text-entrance">
       <span class="text-primary font-semibold">Développeur web</span>, avec un
@@ -26,9 +27,14 @@ import "../global.css";
     </p>
   </div>
 
-  <!-- Indicateur de scroll -->
-  <div class="scroll-indicator">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <div class="scroll-indicator" aria-hidden="true">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         d="M12 5L12 19M12 19L7 14M12 19L17 14"
         stroke="currentColor"
@@ -43,116 +49,74 @@ import "../global.css";
 <script>
   import { gsap } from "gsap";
 
-  function initScrollIndicator() {
+  function animateScrollIndicator() {
     const scrollIndicator = document.querySelector(".scroll-indicator");
     const scrollIcon = scrollIndicator?.querySelector("svg");
     const scrollText = scrollIndicator?.querySelector(".scroll-text");
-
     if (!scrollIndicator || !scrollIcon || !scrollText) return;
 
-    let hasScrolled = false;
+    // Animate text opacity (loop)
+    gsap.to(scrollText, {
+      opacity: 1,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut",
+    });
 
-    // Animation de l'indicateur
-    const tl = gsap.timeline({ repeat: -1, delay: 2 });
+    // Animate arrow up and down (loop)
+    gsap.to(scrollIcon, {
+      y: 8,
+      opacity: 1,
+      duration: 0.7,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
 
-    tl
-      // Animation du texte
-      .fromTo(
-        scrollText,
-        {
-          opacity: 0.6,
-        },
-        {
-          opacity: 1,
-          duration: 1.5,
-          ease: "power2.inOut",
-        }
-      )
-      .to(scrollText, {
-        opacity: 0.6,
-        duration: 1.5,
-        ease: "power2.inOut",
-      })
-      // Animation de la flèche (en parallèle)
-      .fromTo(
-        scrollIcon,
-        {
-          y: 0,
-          opacity: 0.7,
-        },
-        {
-          y: 8,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power2.inOut",
-        },
-        0
-      )
-      .to(scrollIcon, {
-        y: 0,
-        opacity: 0.7,
-        duration: 1.2,
-        ease: "power2.inOut",
-      })
-      // Pause entre les cycles
-      .to({}, { duration: 0.8 });
-
-    // Disparition au premier scroll
-    function handleFirstScroll() {
-      if (hasScrolled) return;
-
+    // Hide indicator on first scroll
+    function hideOnFirstScroll() {
       if (window.scrollY > 100) {
-        hasScrolled = true;
-
-        // Arrêter l'animation en boucle
-        tl.kill();
-
-        // Animation de disparition
         gsap.to(scrollIndicator, {
           opacity: 0,
           y: 20,
           duration: 0.8,
           ease: "power2.out",
           onComplete: () => {
-            if (scrollIndicator) {
-              (scrollIndicator as HTMLElement).style.display = "none";
-            }
+            (scrollIndicator as HTMLElement).style.display = "none";
           },
         });
-
-        // Supprimer l'écouteur
-        window.removeEventListener("scroll", handleFirstScroll);
+        window.removeEventListener("scroll", hideOnFirstScroll);
       }
     }
-
-    // Écouter le scroll
-    window.addEventListener("scroll", handleFirstScroll);
+    window.addEventListener("scroll", hideOnFirstScroll);
   }
 
-  // Initialiser quand le DOM est prêt
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initScrollIndicator);
+    document.addEventListener("DOMContentLoaded", animateScrollIndicator);
   } else {
-    initScrollIndicator();
+    animateScrollIndicator();
   }
 </script>
 
 <style>
-  /* Animation d'entrée pour la photo */
+  /* Portrait animation */
   .photo-entrance {
     opacity: 0;
     transform: scale(0.8);
     animation: photoFadeInScale 0.8s ease-out forwards;
+    will-change: transform, opacity;
   }
 
-  /* Animation d'entrée pour le texte */
+  /* Text animation */
   .text-entrance {
     opacity: 0;
     transform: translateX(30px);
     animation: textSlideIn 1s ease-out 0.3s forwards;
+    will-change: transform, opacity;
   }
 
-  /* Indicateur de scroll */
+  /* Scroll indicator styles */
   .scroll-indicator {
     position: absolute;
     bottom: 2rem;
@@ -167,11 +131,9 @@ import "../global.css";
     cursor: pointer;
     transition: opacity 0.3s ease;
   }
-
   .scroll-indicator:hover {
     opacity: 1;
   }
-
   .scroll-text {
     font-size: 0.875rem;
     font-family: var(--font-body);
@@ -179,30 +141,25 @@ import "../global.css";
     letter-spacing: 0.5px;
     text-transform: lowercase;
   }
-
   .scroll-indicator svg {
     width: 20px;
     height: 20px;
     opacity: 0.7;
   }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .scroll-indicator {
       bottom: 1.5rem;
     }
-
     .scroll-text {
       font-size: 0.75rem;
     }
-
     .scroll-indicator svg {
       width: 18px;
       height: 18px;
     }
   }
 
-  /* Keyframes pour la photo */
   @keyframes photoFadeInScale {
     0% {
       opacity: 0;
@@ -213,8 +170,6 @@ import "../global.css";
       transform: scale(1);
     }
   }
-
-  /* Keyframes pour le texte */
   @keyframes textSlideIn {
     0% {
       opacity: 0;
@@ -226,13 +181,6 @@ import "../global.css";
     }
   }
 
-  /* Optimisation des performances */
-  .photo-entrance,
-  .text-entrance {
-    will-change: transform, opacity;
-  }
-
-  /* Réduction du mouvement pour l'accessibilité */
   @media (prefers-reduced-motion: reduce) {
     .photo-entrance,
     .text-entrance {
@@ -240,7 +188,6 @@ import "../global.css";
       opacity: 1;
       transform: none;
     }
-
     .scroll-indicator {
       animation: none;
     }
