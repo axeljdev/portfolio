@@ -1,3 +1,7 @@
+---
+import { Analytics } from "@vercel/analytics/react";
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,6 +20,7 @@
   </head>
   <body>
     <slot />
+    <Analytics />
   </body>
 </html>
 
