@@ -1,0 +1,30 @@
+---
+import Navbar from "./Navbar.astro";
+import "../global.css";
+---
+
+<!-- Section A propos -->
+<section id="about" class="h-[100svh] md:h-[80svh] flex flex-col">
+  <Navbar />
+  <div
+    class="px-5 flex flex-col items-center justify-center flex-1 md:flex-row md:px-[28rem] 2xl:px-[30rem] md:gap-8"
+  >
+    <img
+      src="/axel.png"
+      alt="Axel"
+      class="w-30 h-30 mb-6 rounded-full bg-primary md:mb-0"
+    />
+    <p class="font-body font-light">
+      <span class="text-primary font-semibold">Développeur web</span>, avec un
+      petit faible pour le <span class="text-primary">design d'interface</span>.
+      Je jongle entre <span class="text-primary">code propre</span> et
+      <span class="text-primary">UI soignée</span>, toujours avec l'envie de
+      créer des trucs utiles, clairs… et un peu <span class="text-primary"
+        >cool</span
+      >
+      quand même.
+    </p>
+  </div>
+</section>
+
+<style></style>

@@ -1,0 +1,258 @@
+---
+import "../global.css";
+---
+
+<section
+  id="hobby"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem]"
+>
+  <div>
+    <h2 class="text-2xl font-bold text-primary font-heading mb-4 hobby-title">
+      En dehors
+    </h2>
+    <ul class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <li class="hobby-item">
+        <p>Jeux vidéo</p>
+      </li>
+      <li class="hobby-item">
+        <p>Animation</p>
+      </li>
+      <li class="hobby-item">
+        <p>Cuisine</p>
+      </li>
+      <li class="hobby-item">
+        <p>Nintendo</p>
+      </li>
+      <li class="hobby-item">
+        <p>Manga</p>
+      </li>
+      <li class="hobby-item">
+        <p>Japon</p>
+      </li>
+      <li class="hobby-item">
+        <p>Zelda</p>
+      </li>
+      <li class="hobby-item">
+        <p>One Piece</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initHobbyAnimation() {
+    const hobbySection = document.getElementById("hobby");
+    const hobbyTitle = document.querySelector(".hobby-title");
+    const hobbyItems = document.querySelectorAll(".hobby-item");
+
+    if (!hobbySection || !hobbyItems.length) return;
+
+    // Animation du titre avec un petit bounce
+    gsap.fromTo(
+      hobbyTitle,
+      {
+        opacity: 0,
+        y: 30,
+        rotation: -2,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        rotation: 0,
+        duration: 1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: hobbySection,
+          start: "top 70%",
+          end: "top 30%",
+          toggleActions: "play none none reverse",
+          scrub: 1,
+        },
+      }
+    );
+
+    // Animation des hobbies avec des effets ludiques variés
+    hobbyItems.forEach((item, index) => {
+      // Variantes d'animation selon l'index pour plus de dynamisme
+      const isEven = index % 2 === 0;
+      const animationVariant = index % 3;
+
+      let fromVars: any = {};
+      let toVars: any = {};
+
+      // 3 types d'animations différentes pour varier
+      switch (animationVariant) {
+        case 0: // Rotation + scale depuis la gauche
+          fromVars = {
+            opacity: 0,
+            x: -40,
+            scale: 0.6,
+            rotation: isEven ? -15 : 15,
+          };
+          toVars = {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            rotation: 0,
+            ease: "back.out(1.7)",
+          };
+          break;
+
+        case 1: // Pop depuis le centre
+          fromVars = {
+            opacity: 0,
+            scale: 0.3,
+            rotation: isEven ? 10 : -10,
+          };
+          toVars = {
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            ease: "elastic.out(1, 0.5)",
+          };
+          break;
+
+        case 2: // Slide depuis la droite avec bounce
+          fromVars = {
+            opacity: 0,
+            x: 30,
+            y: -20,
+            scale: 0.8,
+            rotation: isEven ? 8 : -8,
+          };
+          toVars = {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            ease: "bounce.out",
+          };
+          break;
+      }
+
+      gsap.fromTo(item, fromVars, {
+        ...toVars,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: hobbySection,
+          start: `top ${68 - index * 2}%`,
+          end: `top ${28 - index * 2}%`,
+          toggleActions: "play none none reverse",
+          scrub: 1.5,
+        },
+      });
+
+      // Animation hover plus ludique
+      item.addEventListener("mouseenter", () => {
+        gsap.to(item, {
+          scale: 1.1,
+          rotation: gsap.utils.random(-5, 5),
+          y: -5,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        gsap.to(item.querySelector("p"), {
+          color: "var(--primary-color)",
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        gsap.to(item, {
+          scale: 1,
+          rotation: 0,
+          y: 0,
+          duration: 0.4,
+          ease: "elastic.out(1, 0.5)",
+        });
+        gsap.to(item.querySelector("p"), {
+          color: "var(--text-color)",
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    });
+  }
+
+  // Initialiser quand le DOM est prêt
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHobbyAnimation);
+  } else {
+    initHobbyAnimation();
+  }
+</script>
+
+<style>
+  /* Styles de base pour les éléments animés */
+  .hobby-title {
+    opacity: 0;
+    transform: translateY(30px) rotate(-2deg);
+  }
+
+  .hobby-item {
+    opacity: 0;
+    cursor: pointer;
+    padding: 16px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+    transform-origin: center center;
+  }
+
+  .hobby-item:hover {
+    background-color: color-mix(in srgb, var(--primary-color) 8%, transparent);
+  }
+
+  .hobby-item p {
+    transition: color 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* Styles spéciaux pour certains hobbies */
+  .hobby-item:nth-child(4) {
+    /* Nintendo */
+    background: linear-gradient(
+      135deg,
+      rgba(220, 38, 127, 0.05),
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  .hobby-item:nth-child(7) {
+    /* Zelda */
+    background: linear-gradient(
+      135deg,
+      rgba(76, 175, 80, 0.05),
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  .hobby-item:nth-child(8) {
+    /* One Piece */
+    background: linear-gradient(
+      135deg,
+      rgba(255, 152, 0, 0.05),
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  /* Réduction du mouvement pour l'accessibilité */
+  @media (prefers-reduced-motion: reduce) {
+    .hobby-title,
+    .hobby-item {
+      opacity: 1;
+      transform: none;
+    }
+
+    .hobby-item:hover {
+      transform: none;
+    }
+  }
+</style>

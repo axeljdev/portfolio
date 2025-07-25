@@ -1,0 +1,36 @@
+---
+import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+---
+
+<nav id="navbar">
+  <Logo />
+  <div class="theme-toggle-fixed">
+    <ThemeToggle />
+  </div>
+</nav>
+
+<style>
+  .theme-toggle-fixed {
+    position: fixed;
+    top: 10px;
+    right: 25px;
+    z-index: 1000;
+  }
+
+  /* Desktop : aligner avec la sidebar */
+  @media (min-width: 769px) {
+    .theme-toggle-fixed {
+      top: 26px;
+      right: 24px;
+    }
+  }
+
+  #navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    padding-left: 1.5rem;
+  }
+</style>

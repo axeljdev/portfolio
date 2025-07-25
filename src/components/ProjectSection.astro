@@ -1,0 +1,282 @@
+---
+import "../global.css";
+---
+
+<section
+  id="projects"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem]"
+>
+  <div class="flex flex-col">
+    <h2
+      class="text-2xl font-bold text-primary font-heading mb-4 projects-title"
+    >
+      Projets récents
+    </h2>
+    <ul class="flex flex-col md:grid md:grid-cols-2 gap-4">
+      <li class="project-item">
+        <p class="font-bold project-name">CP Academy</p>
+        <span class="project-description"
+          >Site vitrine et CRM<a
+            href="https://cpacademy.fr"
+            target="_blank"
+            class="arrow-link"><div class="arrow-icon"></div></a
+          ></span
+        >
+      </li>
+      <li class="project-item">
+        <p class="font-bold project-name">Genieclim France</p>
+        <span class="project-description"
+          >Site et ERP<a
+            href="https://genieclimfrance.fr"
+            target="_blank"
+            class="arrow-link"><div class="arrow-icon"></div></a
+          ></span
+        >
+      </li>
+      <li class="project-item">
+        <p class="font-bold project-name">Pernot Location</p>
+        <span class="project-description"
+          >Site vitrine<a
+            href="https://pernotlocation.fr"
+            target="_blank"
+            class="arrow-link"><div class="arrow-icon"></div></a
+          ></span
+        >
+      </li>
+      <li class="project-item">
+        <p class="font-bold project-name">Giftwhisper</p>
+        <span class="project-description"
+          >Projet d'école<a
+            href="https://github.com/WildCodeSchool/2409-wns-rouge-giftwhisper"
+            target="_blank"
+            class="arrow-link"><div class="arrow-icon"></div></a
+          ></span
+        >
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initProjectsAnimation() {
+    const projectsSection = document.getElementById("projects");
+    const projectsTitle = document.querySelector(".projects-title");
+    const projectItems = document.querySelectorAll(".project-item");
+
+    if (!projectsSection || !projectItems.length) return;
+
+    // Animation du titre
+    gsap.fromTo(
+      projectsTitle,
+      {
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: projectsSection,
+          start: "top 70%",
+          end: "top 30%",
+          toggleActions: "play none none reverse",
+          scrub: 1,
+        },
+      }
+    );
+
+    // Animation des projets
+    projectItems.forEach((item, index) => {
+      const projectName = item.querySelector(".project-name");
+      const projectDescription = item.querySelector(".project-description");
+      const arrowIcon = item.querySelector(".arrow-icon");
+
+      // Timeline pour chaque projet
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: projectsSection,
+          start: `top ${65 - index * 3}%`,
+          end: `top ${25 - index * 3}%`,
+          toggleActions: "play none none reverse",
+          scrub: 1.5,
+        },
+      });
+
+      // Animation du nom du projet
+      tl.fromTo(
+        projectName,
+        {
+          opacity: 0,
+          x: -30,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: "power2.out",
+        }
+      )
+        // Animation de la description
+        .fromTo(
+          projectDescription,
+          {
+            opacity: 0,
+            x: -20,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.3"
+        )
+        // Animation de la flèche qui se "dessine"
+        .fromTo(
+          arrowIcon,
+          {
+            opacity: 0,
+            scaleX: 0,
+            transformOrigin: "left center",
+          },
+          {
+            opacity: 1,
+            scaleX: 1,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          "-=0.2"
+        );
+
+      // Animation hover pour chaque projet
+      item.addEventListener("mouseenter", () => {
+        gsap.to(item, {
+          x: 5,
+          scale: 1.02,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        gsap.to(arrowIcon, {
+          x: 8,
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        gsap.to(projectName, {
+          color: "var(--primary-color)",
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        gsap.to(item, {
+          x: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        gsap.to(arrowIcon, {
+          x: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        gsap.to(projectName, {
+          color: "var(--text-color)",
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    });
+  }
+
+  // Initialiser quand le DOM est prêt
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProjectsAnimation);
+  } else {
+    initProjectsAnimation();
+  }
+</script>
+
+<style>
+  /* Styles de base pour les éléments animés */
+  .projects-title {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .project-item {
+    opacity: 1;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .project-item:hover {
+    background-color: color-mix(in srgb, var(--primary-color) 5%, transparent);
+  }
+
+  .project-name {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.9);
+    transition: color 0.3s ease;
+  }
+
+  .project-description {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .arrow-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .arrow-icon {
+    display: inline-block;
+    width: 3.25rem;
+    height: 2rem;
+    background-color: var(--primary-color);
+    mask-image: url("/arrow.svg");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url("/arrow.svg");
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    transition: background-color 0.3s ease;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  /* Réduction du mouvement pour l'accessibilité */
+  @media (prefers-reduced-motion: reduce) {
+    .projects-title,
+    .project-name,
+    .project-description,
+    .arrow-icon {
+      opacity: 1;
+      transform: none;
+    }
+
+    .project-item:hover {
+      transform: none;
+    }
+  }
+</style>

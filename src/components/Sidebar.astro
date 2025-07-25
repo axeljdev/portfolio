@@ -1,0 +1,749 @@
+---
+// Composant Sidebar de navigation progressive
+export interface Props {
+  sections?: Array<{
+    id: string;
+    label: string;
+  }>;
+}
+
+const {
+  sections = [
+    { id: "about", label: "A propos" },
+    { id: "projects", label: "Projets" },
+    { id: "stack", label: "Outils" },
+    { id: "hobby", label: "En dehors" },
+    { id: "contact", label: "Contact" },
+  ],
+} = Astro.props;
+
+// Créer des points de progression de 0% à 100%
+const totalPoints = 11; // 0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100%
+const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
+  const percentage = (index / (totalPoints - 1)) * 100;
+
+  // Mapper UN SEUL point par section
+  let sectionInfo = { id: "", label: "" };
+
+  if (percentage === 0) {
+    sectionInfo = { id: "about", label: "A propos" };
+  } else if (percentage === 20) {
+    sectionInfo = { id: "projects", label: "Projets" };
+  } else if (percentage === 50) {
+    sectionInfo = { id: "stack", label: "Outils" };
+  } else if (percentage === 70) {
+    sectionInfo = { id: "hobby", label: "En dehors" };
+  } else if (percentage === 100) {
+    sectionInfo = { id: "contact", label: "Contact" };
+  }
+
+  return {
+    percentage,
+    index,
+    sectionId: sectionInfo.id,
+    sectionLabel: sectionInfo.label,
+    isSection: sectionInfo.id !== "",
+  };
+});
+---
+
+<nav class="sidebar" aria-label="Navigation des sections">
+  <ul class="sidebar-list">
+    {
+      progressPoints.map((point, index) => (
+        <li class="sidebar-item">
+          {point.isSection &&
+          (point.percentage === 0 || point.percentage === 100) ? (
+            <a
+              href={`#${point.sectionId}`}
+              class={`sidebar-label ${point.percentage === 0 ? "first-label" : "last-label"}`}
+              data-section={point.sectionId}
+              data-percentage={point.percentage}
+              aria-label={`Aller à la section ${point.sectionLabel}`}
+            >
+              {point.sectionLabel}
+            </a>
+          ) : (
+            <div
+              class="sidebar-element"
+              data-section={point.sectionId}
+              data-percentage={point.percentage}
+              data-section-label={point.sectionLabel}
+              data-is-section={point.isSection}
+            >
+              <span class="dot" />
+              <span class="section-label">{point.sectionLabel}</span>
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  function initSidebar() {
+    const sidebarElements = document.querySelectorAll(".sidebar-element");
+    const sidebarLabels = document.querySelectorAll(".sidebar-label");
+    const firstLabel = document.querySelector(".first-label");
+    const lastLabel = document.querySelector(".last-label");
+    const sections = Array.from(document.querySelectorAll("[id]")).filter(
+      (el) => ["about", "projects", "stack", "hobby", "contact"].includes(el.id)
+    );
+    let isScrolling = false;
+
+    // Obtenir le pourcentage de scroll global
+    function getScrollPercentage(): number {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      return Math.min((scrollTop / docHeight) * 100, 100);
+    }
+
+    // Obtenir la section active
+    function getCurrentSection(): string {
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i] as HTMLElement;
+        const sectionTop = section.offsetTop;
+        if (scrollPosition >= sectionTop) {
+          return section.id;
+        }
+      }
+      return sections[0]?.id || "";
+    }
+
+    // Mettre à jour l'état visuel de la sidebar
+    function updateSidebarState() {
+      const scrollPercentage = getScrollPercentage();
+      const currentSectionId = getCurrentSection();
+
+      // Gérer les labels fixes (A propos et Contact) - mais seulement si les points correspondants sont remplis
+      if (firstLabel) {
+        firstLabel.classList.remove("active");
+        if (currentSectionId === "about" && scrollPercentage >= 0) {
+          firstLabel.classList.add("active");
+        }
+      }
+
+      if (lastLabel) {
+        lastLabel.classList.remove("active");
+        // Contact ne s'allume que si on a atteint 100% ET qu'on est dans la section contact
+        if (currentSectionId === "contact" && scrollPercentage >= 95) {
+          lastLabel.classList.add("active");
+        }
+      }
+
+      // Gérer les éléments de progression
+      sidebarElements.forEach((element) => {
+        const elementPercentage = parseFloat(
+          (element as HTMLElement).dataset.percentage || "0"
+        );
+        const sectionId = (element as HTMLElement).dataset.section;
+        const sectionLabel = (element as HTMLElement).dataset.sectionLabel;
+        const isSection = (element as HTMLElement).dataset.isSection === "true";
+
+        // Réinitialiser les classes
+        element.classList.remove("filled", "section-active");
+
+        // Remplir les points en fonction du scroll global
+        if (elementPercentage <= scrollPercentage) {
+          element.classList.add("filled");
+        }
+
+        // Transformer en label si c'est le point de la section active ET que le point est rempli
+        if (
+          isSection &&
+          sectionId === currentSectionId &&
+          sectionLabel &&
+          elementPercentage <= scrollPercentage
+        ) {
+          element.classList.add("section-active");
+        }
+      });
+
+      // Mettre à jour les décalages pour desktop
+      updateDesktopSpacing();
+    }
+
+    // Gérer l'espacement des éléments actifs (desktop uniquement)
+    function updateDesktopSpacing() {
+      if (window.innerWidth <= 768) return; // Mobile uniquement
+      // La logique d'espacement est maintenant gérée par les classes CSS automatiquement
+    }
+
+    // Navigation fluide vers les sections
+    function smoothScrollToSection(sectionId: string) {
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        isScrolling = true;
+
+        // Animation progressive pendant la navigation
+        animateScrollProgress();
+
+        // Scroll personnalisé plus lent
+        const targetPosition = targetSection.offsetTop;
+        smoothScrollTo(targetPosition);
+
+        setTimeout(() => {
+          isScrolling = false;
+          updateSidebarState(); // Mise à jour finale
+        }, 500);
+      }
+    }
+
+    // Navigation fluide vers un pourcentage de la page
+    function smoothScrollToPercentage(percentage: number) {
+      isScrolling = true;
+
+      // Animation progressive pendant la navigation
+      animateScrollProgress();
+
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const targetPosition = (percentage / 100) * docHeight;
+
+      // Scroll personnalisé plus lent
+      smoothScrollTo(targetPosition);
+
+      setTimeout(() => {
+        isScrolling = false;
+        updateSidebarState(); // Mise à jour finale
+      }, 3000); // Augmenté à 3 secondes
+    }
+
+    // Fonction de scroll personnalisé plus lent
+    function smoothScrollTo(targetPosition: number) {
+      const startPosition = window.scrollY;
+      const distance = targetPosition - startPosition;
+      const duration = 2500; // 2.5 secondes pour le scroll
+      let startTime: number | null = null;
+
+      function scrollAnimation(currentTime: number) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutQuad(
+          timeElapsed,
+          startPosition,
+          distance,
+          duration
+        );
+        window.scrollTo(0, run);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(scrollAnimation);
+        }
+      }
+
+      // Fonction d'easing pour un mouvement plus fluide
+      function easeInOutQuad(
+        t: number,
+        b: number,
+        c: number,
+        d: number
+      ): number {
+        t /= d / 2;
+        if (t < 1) return (c / 2) * t * t + b;
+        t--;
+        return (-c / 2) * (t * (t - 2) - 1) + b;
+      }
+
+      requestAnimationFrame(scrollAnimation);
+    }
+
+    // Animer la progression pendant le scroll programmé
+    function animateScrollProgress() {
+      let animationCount = 0;
+      const maxAnimations = 30; // Encore plus d'animations pour couvrir 3 secondes
+
+      const progressInterval = setInterval(() => {
+        updateSidebarState();
+        animationCount++;
+
+        if (animationCount >= maxAnimations) {
+          clearInterval(progressInterval);
+        }
+      }, 100); // Ralenti à 100ms entre chaque mise à jour
+    }
+
+    // Event listeners pour les éléments de progression
+    sidebarElements.forEach((element) => {
+      element.addEventListener("click", (e) => {
+        e.preventDefault();
+        const sectionId = (element as HTMLElement).dataset.section;
+        const percentage = parseFloat(
+          (element as HTMLElement).dataset.percentage || "0"
+        );
+
+        // Si c'est une section, naviguer vers la section
+        if (sectionId) {
+          smoothScrollToSection(sectionId);
+        } else {
+          // Sinon, naviguer vers le pourcentage
+          smoothScrollToPercentage(percentage);
+        }
+      });
+
+      // Écouter les événements hover pour les sections
+      if ((element as HTMLElement).dataset.isSection === "true") {
+        element.addEventListener("mouseenter", () => {
+          updateDesktopSpacing();
+        });
+
+        element.addEventListener("mouseleave", () => {
+          updateDesktopSpacing();
+        });
+      }
+    });
+
+    // Event listeners pour les labels
+    sidebarLabels.forEach((label) => {
+      label.addEventListener("click", (e) => {
+        e.preventDefault();
+        const sectionId = (label as HTMLElement).dataset.section;
+        if (sectionId) {
+          smoothScrollToSection(sectionId);
+        }
+      });
+    });
+
+    // Throttled scroll listener
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    window.addEventListener("scroll", () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateSidebarState, 10);
+    });
+
+    // Listener pour les changements de taille d'écran
+    window.addEventListener("resize", () => {
+      updateDesktopSpacing();
+    });
+
+    // Initialisation
+    updateSidebarState();
+  }
+
+  // Initialiser quand le DOM est prêt
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSidebar);
+  } else {
+    initSidebar();
+  }
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    z-index: 100;
+    transition: all 0.3s ease;
+    font-family: var(--font-heading);
+  }
+
+  /* Mobile : Sidebar à droite */
+  @media (max-width: 768px) {
+    .sidebar {
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* Desktop : Sidebar en haut */
+  @media (min-width: 769px) {
+    .sidebar {
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .sidebar-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 16px;
+    list-style: none;
+  }
+
+  /* Desktop : Layout horizontal */
+  @media (min-width: 769px) {
+    .sidebar-list {
+      flex-direction: row;
+      gap: 12px;
+      padding: 12px 24px;
+    }
+
+    /* Transition fluide pour tous les éléments */
+    .sidebar-element {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+    }
+
+    /* Seul l'élément actif s'écarte pour laisser place au label */
+    .sidebar-element.section-active {
+      min-width: max-content;
+      padding: 4px 12px;
+    }
+
+    /* Même effet au hover pour les points de sections */
+    .sidebar-element[data-is-section="true"]:hover {
+      min-width: max-content;
+      padding: 4px 12px;
+    }
+  }
+
+  /* Mobile : Forcer le layout vertical */
+  @media (max-width: 768px) {
+    .sidebar-list {
+      flex-direction: column !important;
+      gap: 8px;
+      padding: 16px 8px;
+    }
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-label {
+    position: relative;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+
+  .sidebar-label:hover {
+    color: var(--primary-color);
+    transform: scale(1.05);
+  }
+
+  /* Trait indicateur au hover pour les labels fixes */
+  .sidebar-label:hover::before {
+    content: "";
+    position: absolute;
+    background-color: var(--primary-color);
+    border-radius: 1px;
+    opacity: 0.6;
+  }
+
+  /* Mobile : trait à droite au hover pour les labels */
+  @media (max-width: 768px) {
+    .sidebar-label:hover::before {
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 2px;
+    }
+  }
+
+  /* Desktop : trait au-dessus au hover pour les labels */
+  @media (min-width: 769px) {
+    .sidebar-label:hover::before {
+      left: 50%;
+      top: -32px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar-label {
+      font-size: 16px;
+    }
+  }
+
+  .first-label {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+  }
+
+  .first-label.active::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 2px;
+    background-color: var(--primary-color);
+    border-radius: 1px;
+  }
+
+  .last-label {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+  }
+
+  .last-label.active {
+    color: var(--primary-color);
+  }
+
+  .last-label.active::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 2px;
+    background-color: var(--primary-color);
+    border-radius: 1px;
+  }
+
+  .sidebar-element {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .sidebar-element:hover {
+    transform: scale(1.1);
+  }
+
+  .sidebar-element:hover .dot {
+    background-color: var(--primary-color);
+    opacity: 1;
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Points de sections non-remplis : hover en couleur de texte */
+  .sidebar-element[data-is-section="true"]:not(.filled):hover .dot {
+    background-color: var(--text-color);
+    opacity: 1;
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Afficher le label au hover pour les sections */
+  .sidebar-element:hover .section-label {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Masquer le point au hover si c'est une section */
+  .sidebar-element[data-is-section="true"]:hover .dot {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  /* Trait indicateur au hover pour les sections */
+  .sidebar-element[data-is-section="true"]:hover::before {
+    content: "";
+    position: absolute;
+    background-color: var(--primary-color);
+    border-radius: 1px;
+    opacity: 0.6;
+  }
+
+  /* Mobile : trait à droite au hover */
+  @media (max-width: 768px) {
+    .sidebar-element[data-is-section="true"]:hover::before {
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 2px;
+    }
+  }
+
+  /* Desktop : trait au-dessus au hover */
+  @media (min-width: 769px) {
+    .sidebar-element[data-is-section="true"]:hover::before {
+      left: 50%;
+      top: -32px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+    }
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--text-color);
+    opacity: 0.3;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
+  }
+
+  /* Points de sections : couleur de texte par défaut */
+  .sidebar-element[data-is-section="true"] .dot {
+    background-color: var(--text-color);
+    opacity: 0.6;
+  }
+
+  .sidebar-element.filled .dot {
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    width: 6px;
+    height: 6px;
+  }
+
+  .section-label {
+    position: absolute;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--primary-color);
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 10;
+    min-width: max-content;
+  }
+
+  /* Labels dans les éléments actifs en desktop */
+  @media (min-width: 769px) {
+    .sidebar-element.section-active .section-label {
+      position: relative;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    /* Même style pour les labels au hover */
+    .sidebar-element[data-is-section="true"]:hover .section-label {
+      position: relative;
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .section-label {
+      font-size: 14px;
+    }
+  }
+
+  .sidebar-element.section-active .dot {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .sidebar-element.section-active .section-label {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Trait indicateur pour la section active */
+  .sidebar-element.section-active::after {
+    content: "";
+    position: absolute;
+    background-color: var(--primary-color);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+  }
+
+  /* Mobile : trait à droite */
+  @media (max-width: 768px) {
+    .sidebar-element.section-active::after {
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 2px;
+    }
+  }
+
+  /* Desktop : trait au-dessus */
+  @media (min-width: 769px) {
+    .sidebar-element.section-active::after {
+      left: 50%;
+      top: -32px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+    }
+  }
+
+  /* Desktop : traits au-dessus pour les labels */
+  @media (min-width: 769px) {
+    .first-label.active::after,
+    .last-label.active::after {
+      right: auto;
+      left: 50%;
+      top: -32px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+    }
+  }
+
+  /* Animation pour les points remplis */
+  .sidebar-element.filled .dot {
+    animation: fillPulse 0.6s ease-out;
+  }
+
+  @keyframes fillPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Animation pour l'apparition des labels */
+  .sidebar-element.section-active .section-label {
+    animation: labelAppear 0.5s ease-out;
+  }
+
+  @keyframes labelAppear {
+    0% {
+      opacity: 0;
+      transform: scale(0.6) translateY(5px);
+    }
+    60% {
+      transform: scale(1.05) translateY(-2px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sidebar {
+      right: 8px;
+    }
+
+    .sidebar-list {
+      padding: 12px 6px;
+      gap: 6px;
+    }
+
+    .sidebar-label {
+      font-size: 14px;
+    }
+
+    .section-label {
+      font-size: 12px;
+    }
+  }
+</style>

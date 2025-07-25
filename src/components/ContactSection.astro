@@ -1,0 +1,374 @@
+---
+import "../global.css";
+---
+
+<section id="contact" class="px-5 h-[100svh] flex flex-col justify-center">
+  <div class="flex flex-col gap-4 items-center contact-container">
+    <button
+      class="bg-primary font-body text-white font-semibold px-4 py-2 rounded-md w-fit cv-button"
+    >
+      Télécharge mon CV
+    </button>
+    <ul class="flex gap-4 font-heading contact-links">
+      <li>
+        <a
+          href="https://www.linkedin.com/in/axel-j-dev/"
+          target="_blank"
+          class="contact-link linkedin-link">Linkedin</a
+        >
+      </li>
+      <li>
+        <a
+          href="mailto:axel.j@protonmail.com"
+          target="_blank"
+          class="contact-link mail-link">Mail</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/axeljdev"
+          target="_blank"
+          class="contact-link github-link">GitHub</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://www.malt.fr/profile/axeljdev"
+          target="_blank"
+          class="contact-link malt-link">Malt</a
+        >
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initContactAnimation() {
+    const contactSection = document.getElementById("contact");
+    const cvButton = document.querySelector(".cv-button");
+    const linkedinLink = document.querySelector(".linkedin-link");
+    const mailLink = document.querySelector(".mail-link");
+    const githubLink = document.querySelector(".github-link");
+    const maltLink = document.querySelector(".malt-link");
+
+    if (
+      !contactSection ||
+      !cvButton ||
+      !linkedinLink ||
+      !mailLink ||
+      !githubLink ||
+      !maltLink
+    )
+      return;
+
+    // Timeline principale pour l'effet magnetic
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: contactSection,
+        start: "top 70%",
+        end: "top 30%",
+        toggleActions: "play none none reverse",
+        scrub: 1.5,
+      },
+    });
+
+    // 1. Bouton CV : "matérialisation" magnetic depuis le haut
+    tl.fromTo(
+      cvButton,
+      {
+        opacity: 0,
+        y: -100,
+        scale: 0.3,
+        rotation: 10,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotation: 0,
+        duration: 1,
+        ease: "elastic.out(1, 0.8)",
+      }
+    )
+
+      // 2. LinkedIn : attiré depuis le coin haut-gauche
+      .fromTo(
+        linkedinLink,
+        {
+          opacity: 0,
+          x: -200,
+          y: -150,
+          scale: 0.5,
+          rotation: -25,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      )
+
+      // 3. Mail : attiré depuis le coin haut-droit
+      .fromTo(
+        mailLink,
+        {
+          opacity: 0,
+          x: 200,
+          y: -150,
+          scale: 0.5,
+          rotation: 25,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.7"
+      )
+
+      // 4. GitHub : attiré depuis le coin bas-gauche
+      .fromTo(
+        githubLink,
+        {
+          opacity: 0,
+          x: -200,
+          y: 150,
+          scale: 0.5,
+          rotation: 25,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      )
+
+      // 5. Malt : attiré depuis le coin bas-droit
+      .fromTo(
+        maltLink,
+        {
+          opacity: 0,
+          x: 200,
+          y: 150,
+          scale: 0.5,
+          rotation: -25,
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.7"
+      )
+
+      // 6. Effet de "stabilisation" finale
+      .to(
+        [cvButton, linkedinLink, mailLink, githubLink, maltLink],
+        {
+          scale: 1.02,
+          duration: 0.2,
+          ease: "power2.out",
+        },
+        "-=0.1"
+      )
+      .to([cvButton, linkedinLink, mailLink, githubLink, maltLink], {
+        scale: 1,
+        duration: 0.3,
+        ease: "bounce.out",
+      });
+
+    // Animation hover spéciale pour le bouton CV
+    cvButton.addEventListener("mouseenter", () => {
+      gsap.to(cvButton, {
+        scale: 1.1,
+        y: -8,
+        rotationY: 5,
+        duration: 0.4,
+        ease: "back.out(1.7)",
+      });
+
+      // Effet de pulsation subtle
+      gsap.to(cvButton, {
+        boxShadow:
+          "0 8px 25px color-mix(in srgb, var(--primary-color) 40%, transparent)",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+
+      // Effet "attraction" sur les liens
+      [linkedinLink, mailLink, githubLink, maltLink].forEach((link) => {
+        gsap.to(link, {
+          y: -2,
+          scale: 0.98,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    });
+
+    cvButton.addEventListener("mouseleave", () => {
+      gsap.to(cvButton, {
+        scale: 1,
+        y: 0,
+        rotationY: 0,
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+        duration: 0.5,
+        ease: "elastic.out(1, 0.6)",
+      });
+
+      // Remettre les liens en place
+      [linkedinLink, mailLink, githubLink, maltLink].forEach((link) => {
+        gsap.to(link, {
+          y: 0,
+          scale: 1,
+          duration: 0.4,
+          ease: "elastic.out(1, 0.5)",
+        });
+      });
+    });
+
+    // Animations hover pour les liens uniquement
+    const contactLinks = [linkedinLink, mailLink, githubLink, maltLink];
+
+    contactLinks.forEach((element) => {
+      element.addEventListener("mouseenter", () => {
+        gsap.to(element, {
+          scale: 1.05,
+          y: -3,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+
+        // Effet "attraction" subtil sur les autres liens
+        contactLinks.forEach((otherElement) => {
+          if (otherElement !== element) {
+            gsap.to(otherElement, {
+              x:
+                otherElement.getBoundingClientRect().left <
+                element.getBoundingClientRect().left
+                  ? 2
+                  : -2,
+              duration: 0.3,
+              ease: "power2.out",
+            });
+          }
+        });
+      });
+
+      element.addEventListener("mouseleave", () => {
+        gsap.to(element, {
+          scale: 1,
+          y: 0,
+          duration: 0.4,
+          ease: "elastic.out(1, 0.5)",
+        });
+
+        // Remettre les autres liens en place
+        contactLinks.forEach((otherElement) => {
+          if (otherElement !== element) {
+            gsap.to(otherElement, {
+              x: 0,
+              duration: 0.4,
+              ease: "elastic.out(1, 0.5)",
+            });
+          }
+        });
+      });
+    });
+  }
+
+  // Initialiser quand le DOM est prêt
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initContactAnimation);
+  } else {
+    initContactAnimation();
+  }
+</script>
+
+<style>
+  /* Styles de base pour les éléments animés */
+  .contact-container {
+    opacity: 1;
+  }
+
+  .cv-button {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.3) rotate(10deg);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .cv-button:hover {
+    background-color: color-mix(in srgb, var(--primary-color) 90%, transparent);
+  }
+
+  .contact-link {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    opacity: 0;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .contact-link:hover {
+    color: var(--primary-color);
+  }
+
+  /* Positions initiales pour l'effet magnetic */
+  .linkedin-link {
+    transform: translate(-200px, -150px) scale(0.5) rotate(-25deg);
+  }
+
+  .mail-link {
+    transform: translate(200px, -150px) scale(0.5) rotate(25deg);
+  }
+
+  .github-link {
+    transform: translate(-200px, 150px) scale(0.5) rotate(25deg);
+  }
+
+  .malt-link {
+    transform: translate(200px, 150px) scale(0.5) rotate(-25deg);
+  }
+
+  /* Réduction du mouvement pour l'accessibilité */
+  @media (prefers-reduced-motion: reduce) {
+    .cv-button,
+    .contact-link {
+      opacity: 1;
+      transform: none;
+    }
+
+    .cv-button:hover,
+    .contact-link:hover {
+      transform: none;
+    }
+  }
+</style>

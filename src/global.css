@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=OVO&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+
+/* ===== SYSTÈME DE THÈMES ===== */
+
+/* Variables par défaut (light mode) */
+:root {
+  --background-color: #FEFEFE;
+  --primary-color: #D80101;
+  --text-color: #000000;
+  
+  /* Variables sémantiques */
+  --color-surface: var(--background-color);
+  --color-primary: var(--primary-color);
+  --color-text: var(--text-color);
+  --color-text-secondary: color-mix(in srgb, var(--text-color) 70%, transparent);
+  --color-border: color-mix(in srgb, var(--text-color) 20%, transparent);
+  
+  /* Variables de polices */
+  --font-heading: 'OVO', serif;
+  --font-body: 'Mulish', sans-serif;
+}
+
+/* Dark mode automatique basé sur les préférences système */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #2A2A2A;
+    --primary-color: #FF8C8C;
+    --text-color: #FEFEFE;
+  }
+}
+
+/* Classes pour forcer un thème spécifique */
+[data-theme="light"] {
+  --background-color: #FEFEFE;
+  --primary-color: #D80101;
+  --text-color: #000000;
+}
+
+[data-theme="dark"] {
+  --background-color: #2A2A2A;
+  --primary-color: #FF8C8C;
+  --text-color: #FEFEFE;
+}
+
+/* ===== STYLES GLOBAUX ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-family: var(--font-body);
+}
+
+/* ===== CLASSES UTILITAIRES ===== */
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.border-default {
+  border-color: var(--color-border);
+}
+
+/* ===== BOUTON TOGGLE THÈME ===== */
+
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ===== TRANSITIONS SMOOTHES ===== */
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
