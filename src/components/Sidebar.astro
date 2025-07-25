@@ -82,7 +82,10 @@ const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
 </nav>
 
 <script>
+  import { gsap } from "gsap";
+
   function initSidebar() {
+    const sidebar = document.querySelector(".sidebar");
     const sidebarElements = document.querySelectorAll(".sidebar-element");
     const sidebarLabels = document.querySelectorAll(".sidebar-label");
     const firstLabel = document.querySelector(".first-label");
@@ -91,6 +94,74 @@ const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
       (el) => ["about", "projects", "stack", "hobby", "contact"].includes(el.id)
     );
     let isScrolling = false;
+
+    // Animation d'entrée de la sidebar
+    function animateSidebarEntrance() {
+      if (!sidebar) return;
+
+      // Vérifier les préférences d'accessibilité
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (prefersReducedMotion) {
+        // Pas d'animation, juste afficher la sidebar
+        (sidebar as HTMLElement).style.opacity = "1";
+        sidebar.classList.add("sidebar-visible");
+        return;
+      }
+
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        // Mobile : effet de chute depuis la droite
+        const tl = gsap.timeline();
+
+        tl
+          // 1. Chute directe réaliste
+          .set(sidebar, {
+            x: 150,
+            y: -80,
+            rotation: 20,
+            opacity: 0,
+          })
+          .to(sidebar, {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            opacity: 1,
+            duration: 0.35,
+            ease: "expo.in",
+            onComplete: () => {
+              sidebar.classList.add("sidebar-visible");
+            },
+          });
+      } else {
+        // Desktop : effet de chute depuis le haut
+        const tl = gsap.timeline({ delay: 0.5 });
+
+        tl
+          // 1. Chute libre directe
+          .set(sidebar, {
+            y: -200,
+            rotation: -8,
+            opacity: 0,
+          })
+          .to(sidebar, {
+            y: 0,
+            rotation: 0,
+            opacity: 1,
+            duration: 0.3,
+            ease: "expo.in",
+            onComplete: () => {
+              sidebar.classList.add("sidebar-visible");
+            },
+          });
+      }
+    }
+
+    // Lancer l'animation d'entrée
+    animateSidebarEntrance();
 
     // Obtenir le pourcentage de scroll global
     function getScrollPercentage(): number {
@@ -338,6 +409,8 @@ const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
     z-index: 100;
     transition: all 0.3s ease;
     font-family: var(--font-heading);
+    /* État initial pour l'animation d'entrée */
+    opacity: 0;
   }
 
   /* Mobile : Sidebar à droite */
@@ -345,6 +418,10 @@ const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
     .sidebar {
       right: 16px;
       top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .sidebar.sidebar-visible {
       transform: translateY(-50%);
     }
   }
@@ -355,6 +432,24 @@ const progressPoints = Array.from({ length: totalPoints }, (_, index) => {
       top: 24px;
       left: 50%;
       transform: translateX(-50%);
+    }
+
+    .sidebar.sidebar-visible {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Réduction du mouvement pour l'accessibilité */
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar {
+      opacity: 1 !important;
+      transform: translateY(-50%) !important;
+    }
+
+    @media (min-width: 769px) {
+      .sidebar {
+        transform: translateX(-50%) !important;
+      }
     }
   }
 

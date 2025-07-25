@@ -4,7 +4,7 @@
 
 <section
   id="stack"
-  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem]"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[46rem] 4xl:px-[56rem]"
 >
   <div>
     <h2 class="text-2xl font-bold text-primary font-heading mb-4 stack-title">
@@ -126,7 +126,6 @@
           ease: "power2.out",
         });
         gsap.to(item.querySelector("p"), {
-          color: "var(--primary-color)",
           duration: 0.3,
           ease: "power2.out",
         });
@@ -140,7 +139,6 @@
           ease: "power2.out",
         });
         gsap.to(item.querySelector("p"), {
-          color: "var(--text-color)",
           duration: 0.3,
           ease: "power2.out",
         });
@@ -166,7 +164,6 @@
   .stack-item {
     opacity: 0;
     transform: translateY(50px) scale(0.8);
-    cursor: pointer;
   }
 
   .stack-item p {

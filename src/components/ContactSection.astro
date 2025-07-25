@@ -1,14 +1,23 @@
 ---
 import "../global.css";
+
+// Récupérer l'email depuis les variables d'environnement
+const email = import.meta.env.PUBLIC_EMAIL;
 ---
 
-<section id="contact" class="px-5 h-[100svh] flex flex-col justify-center">
+<section
+  id="contact"
+  class="px-5 h-[100svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[46rem] 4xl:px-[56rem]"
+>
   <div class="flex flex-col gap-4 items-center contact-container">
-    <button
+    <a
+      href="/CV.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
       class="bg-primary font-body text-white font-semibold px-4 py-2 rounded-md w-fit cv-button"
     >
       Télécharge mon CV
-    </button>
+    </a>
     <ul class="flex gap-4 font-heading contact-links">
       <li>
         <a
@@ -19,7 +28,7 @@ import "../global.css";
       </li>
       <li>
         <a
-          href="mailto:axel.j@protonmail.com"
+          href={`mailto:${email}`}
           target="_blank"
           class="contact-link mail-link">Mail</a
         >
@@ -322,10 +331,13 @@ import "../global.css";
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-weight: 600;
     letter-spacing: 0.5px;
+    text-decoration: none;
+    display: inline-block;
   }
 
   .cv-button:hover {
     background-color: color-mix(in srgb, var(--primary-color) 90%, transparent);
+    text-decoration: none;
   }
 
   .contact-link {

@@ -1,13 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=OVO&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-3xl: 120rem;
+  --breakpoint-4xl: 140rem;
+  --breakpoint-5xl: 192rem;
+}
+
 /* ===== SYSTÈME DE THÈMES ===== */
 
-/* Variables par défaut (light mode) */
+/* Variables par défaut (dark mode) */
 :root {
-  --background-color: #FEFEFE;
-  --primary-color: #D80101;
-  --text-color: #000000;
+  --background-color: #2A2A2A;
+  --primary-color: #FF8C8C;
+  --text-color: #F0F0F0;
   
   /* Variables sémantiques */
   --color-surface: var(--background-color);
@@ -21,26 +27,26 @@
   --font-body: 'Mulish', sans-serif;
 }
 
-/* Dark mode automatique basé sur les préférences système */
-@media (prefers-color-scheme: dark) {
+/* Light mode basé sur les préférences système */
+@media (prefers-color-scheme: light) {
   :root {
-    --background-color: #2A2A2A;
-    --primary-color: #FF8C8C;
-    --text-color: #FEFEFE;
+    --background-color: #FEFEFE;
+    --primary-color: #D80101;
+    --text-color: #000000;
   }
 }
 
 /* Classes pour forcer un thème spécifique */
 [data-theme="light"] {
-  --background-color: #FEFEFE;
-  --primary-color: #D80101;
+  --background-color: #F0F0F0;
+  --primary-color: #B60000;
   --text-color: #000000;
 }
 
 [data-theme="dark"] {
   --background-color: #2A2A2A;
   --primary-color: #FF8C8C;
-  --text-color: #FEFEFE;
+  --text-color: #F0F0F0;
 }
 
 /* ===== STYLES GLOBAUX ===== */
@@ -53,7 +59,7 @@ html {
   font-family: var(--font-body);
   background-color: var(--background-color);
   color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 body {
@@ -104,7 +110,7 @@ body {
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 }
 
 .theme-toggle:hover {
@@ -120,5 +126,5 @@ body {
 /* ===== TRANSITIONS SMOOTHES ===== */
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }

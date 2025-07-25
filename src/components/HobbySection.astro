@@ -4,7 +4,7 @@ import "../global.css";
 
 <section
   id="hobby"
-  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem]"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[46rem] 4xl:px-[56rem]"
 >
   <div>
     <h2 class="text-2xl font-bold text-primary font-heading mb-4 hobby-title">
@@ -12,27 +12,195 @@ import "../global.css";
     </h2>
     <ul class="grid grid-cols-2 md:grid-cols-3 gap-4">
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Manette (controller.svg) -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 21.25C20 19.8693 18.8807 18.75 17.5 18.75C16.1193 18.75 15 19.8693 15 21.25V22.5H13.75C12.3693 22.5 11.25 23.6193 11.25 25C11.25 26.3807 12.3693 27.5 13.75 27.5H15V28.75C15 30.1307 16.1193 31.25 17.5 31.25C18.8807 31.25 20 30.1307 20 28.75V27.5H21.25C22.6307 27.5 23.75 26.3807 23.75 25C23.75 23.6193 22.6307 22.5 21.25 22.5H20V21.25Z"
+                fill="currentColor"></path>
+              <path
+                d="M45 20C45 21.3807 43.8807 22.5 42.5 22.5C41.1193 22.5 40 21.3807 40 20C40 18.6193 41.1193 17.5 42.5 17.5C43.8807 17.5 45 18.6193 45 20Z"
+                fill="currentColor"></path>
+              <path
+                d="M42.5 32.5C43.8807 32.5 45 31.3807 45 30C45 28.6193 43.8807 27.5 42.5 27.5C41.1193 27.5 40 28.6193 40 30C40 31.3807 41.1193 32.5 42.5 32.5Z"
+                fill="currentColor"></path>
+              <path
+                d="M40 25C40 26.3807 38.8807 27.5 37.5 27.5C36.1193 27.5 35 26.3807 35 25C35 23.6193 36.1193 22.5 37.5 22.5C38.8807 22.5 40 23.6193 40 25Z"
+                fill="currentColor"></path>
+              <path
+                d="M47.5 27.5C48.8807 27.5 50 26.3807 50 25C50 23.6193 48.8807 22.5 47.5 22.5C46.1193 22.5 45 23.6193 45 25C45 26.3807 46.1193 27.5 47.5 27.5Z"
+                fill="currentColor"></path>
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M30 7.5C25.4697 7.5 19.9059 8.14542 15.5446 8.77325C9.85763 9.5919 5.2274 13.7924 4.02483 19.4708C3.35185 22.6484 2.69235 26.4055 2.54123 29.551C2.43287 31.8063 2.19495 34.9577 1.94289 37.9807C1.68064 41.126 2.7287 44.366 4.65198 46.6703C6.61458 49.0218 9.72288 50.6067 13.3091 49.6032C15.6054 48.9605 17.4402 47.3468 18.8013 45.7565C20.1925 44.1313 21.2998 42.281 22.0884 40.7758C22.6955 39.6168 23.7733 38.9637 24.7885 38.9637H35.2115C36.2265 38.9637 37.3045 39.6168 37.9115 40.7758C38.7003 42.281 39.8075 44.1313 41.1987 45.7565C42.5597 47.3468 44.3945 48.9605 46.6908 49.6032C50.277 50.6067 53.3853 49.0218 55.348 46.6703C57.2713 44.366 58.3192 41.126 58.057 37.9807C57.805 34.9577 57.567 31.8063 57.4587 29.551C57.3075 26.4055 56.648 22.6484 55.975 19.4708C54.7725 13.7924 50.1423 9.5919 44.4553 8.77325C40.094 8.14542 34.5303 7.5 30 7.5ZM16.257 13.7222C20.5686 13.1016 25.842 12.5 30 12.5C34.158 12.5 39.4313 13.1016 43.743 13.7223C47.4125 14.2505 50.3277 16.9372 51.0835 20.5067C51.7417 23.6141 52.333 27.0557 52.4645 29.791C52.5772 32.14 52.8218 35.3657 53.0743 38.3962C53.228 40.239 52.5855 42.177 51.5093 43.4665C50.4723 44.709 49.2722 45.1335 48.0382 44.7883C47.1242 44.5323 46.0817 43.7725 44.9972 42.5052C43.9427 41.2735 43.036 39.7828 42.3405 38.4555C41.0107 35.9168 38.3705 33.9637 35.2115 33.9637H24.7885C21.6295 33.9637 18.9893 35.9168 17.6594 38.4555C16.964 39.7828 16.0571 41.2735 15.0027 42.5052C13.9181 43.7725 12.8757 44.5323 11.9616 44.7883C10.7277 45.1335 9.52755 44.709 8.49063 43.4665C7.4144 42.177 6.77195 40.239 6.9256 38.3962C7.17828 35.3657 7.4226 32.14 7.53545 29.791C7.66688 27.0557 8.25823 23.6141 8.91633 20.5067C9.67228 16.9372 12.5874 14.2505 16.257 13.7222Z"
+                fill="currentColor"></path>
+            </svg>
+          </span>
+        </span>
         <p>Jeux vidéo</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- TV moderne (animation) -->
+            <svg
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="6" width="18" height="12" rx="3"></rect>
+              <path d="M8 20h8"></path>
+              <path d="M12 16v4"></path>
+              <path d="M7 10h2M15 10h2"></path>
+            </svg>
+          </span>
+        </span>
         <p>Animation</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Pizza (cuisine) -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M20.4523 6.41389C19.7598 7.62987 19.1349 9.13617 18.54 10.9127C13.9449 23.3612 6.8369 41.5615 3.40562 50.3C1.84735 54.2682 5.64303 58.2407 9.67793 56.8662C18.4699 53.871 36.6565 47.7172 49.0882 43.7985L49.126 43.7862C50.9098 43.1925 52.4148 42.5832 53.6228 41.9102C54.8183 41.2442 55.8877 40.426 56.6065 39.3367C58.2467 36.8515 57.3377 34.2495 56.253 32.2385C49.428 19.586 40.8963 10.6937 30.242 3.92574C29.2245 3.27947 28.0853 2.73064 26.8545 2.55714C25.5353 2.37117 24.2399 2.63667 23.0742 3.40767C21.9829 4.12952 21.1421 5.20257 20.4523 6.41389ZM37.728 22.7288C33.7762 18.512 29.4732 14.9487 23.8881 10.8312C24.2042 10.0376 24.5071 9.39752 24.7971 8.88829C25.2787 8.04257 25.6438 7.70287 25.8325 7.57797C25.947 7.50224 26.0062 7.48702 26.1565 7.50817C26.3947 7.54179 26.8395 7.68792 27.561 8.14619C37.485 14.4504 45.4285 22.7033 51.8525 34.6122C52.7472 36.2712 52.4582 36.5582 52.4347 36.5812C52.3307 36.7385 52.0223 37.0782 51.1893 37.5425C50.7153 37.8065 50.1228 38.0832 49.3895 38.3752C45.2438 31.7835 41.693 26.9597 37.728 22.7288ZM34.0795 26.1477C37.5527 29.8537 40.7453 34.113 44.5055 40.0082C32.2523 43.929 16.1549 49.3775 8.06553 52.1332L8.06148 52.1345L8.05822 52.1312L8.05968 52.1275C11.2172 44.0862 17.5075 27.9835 22.0875 15.7219C26.9695 19.3751 30.6845 22.5249 34.0795 26.1477ZM25 32.5C27.7615 32.5 30 30.2615 30 27.5C30 24.7386 27.7615 22.5 25 22.5C22.2386 22.5 20 24.7386 20 27.5C20 30.2615 22.2386 32.5 25 32.5ZM25 40C25 42.7615 22.7614 45 20 45C17.2386 45 15 42.7615 15 40C15 37.2385 17.2386 35 20 35C22.7614 35 25 37.2385 25 40ZM32.5 42.5C35.2615 42.5 37.5 40.2615 37.5 37.5C37.5 34.7385 35.2615 32.5 32.5 32.5C29.7385 32.5 27.5 34.7385 27.5 37.5C27.5 40.2615 29.7385 42.5 32.5 42.5Z"
+                fill="currentColor"></path>
+            </svg>
+          </span>
+        </span>
         <p>Cuisine</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Nintendo -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_26_37)">
+                <path
+                  d="M35.4394 60H44.6288C53.0663 60 60 53.0663 60 44.6288V15.3712C60 6.93375 53.0663 0 44.6288 0H35.2538C35.0681 0 34.8731 0.185625 34.8731 0.37125V59.6288C34.8731 59.8144 35.0587 60 35.4394 60ZM46.875 27.0019C50.2538 27.0019 52.8712 29.8144 52.8712 32.9981C52.8712 36.3769 50.0587 38.9944 46.875 38.9944C43.4962 38.9944 40.8788 36.3769 40.8788 32.9981C40.6838 29.6288 43.4962 27.0019 46.875 27.0019ZM28.4962 0H15.3712C6.93375 0 0 6.93375 0 15.3712V44.6288C0 53.0663 6.93375 60 15.3712 60H28.4962C28.6819 60 28.8769 59.8144 28.8769 59.6288V0.37125C28.8769 0.185625 28.6912 0 28.4962 0ZM24.1894 55.1269H15.3712C9.56062 55.1269 4.87312 50.4394 4.87312 44.6288V15.3712C4.87312 9.56062 9.56062 4.87312 15.3712 4.87312H24.0038L24.1894 55.1269ZM9.375 17.9981C9.375 21.1819 11.8163 23.6231 15 23.6231C18.1837 23.6231 20.625 21.1819 20.625 17.9981C20.625 14.8144 18.1837 12.3731 15 12.3731C11.8163 12.3731 9.375 14.8144 9.375 17.9981Z"
+                  fill="currentColor"></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_26_37">
+                  <rect width="60" height="60" fill="currentColor"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          </span>
+        </span>
         <p>Nintendo</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Manga -->
+            <svg
+              width="28"
+              height="24"
+              viewBox="0 0 54 47"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M27 9.25805C24.2497 5.75765 20.0102 2.25725 9.50298 2.00038C8.81283 1.98353 8.25 2.5441 8.25 3.23445C8.25 8.35565 8.25 27.7438 8.25 33.4778C8.25 34.1681 8.81288 34.7103 9.50285 34.7328C20.0101 35.0763 24.2497 39.7348 27 43.2353M27 9.25805C29.7503 5.75765 33.9898 2.25725 44.497 2.00038C45.1873 1.98353 45.75 2.5315 45.75 3.22185C45.75 8.9465 45.75 27.7513 45.75 33.4761C45.75 34.1663 45.1872 34.7103 44.4972 34.7328C33.99 35.0763 29.7503 39.7348 27 43.2353M27 9.25805V43.2353"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linejoin="round"></path>
+              <path
+                d="M45.0883 6.98532H50.75C51.4403 6.98532 52 7.54497 52 8.23532V40.8328C52 41.8443 50.8082 42.5163 49.8837 42.1056C47.896 41.2223 44.5787 40.1433 40.2352 40.1433C32.8822 40.1433 27 44.4853 27 44.4853C27 44.4853 21.1177 40.1433 13.7647 40.1433C9.42113 40.1433 6.1039 41.2223 4.11618 42.1056C3.1917 42.5163 2 41.8443 2 40.8328V8.23532C2 7.54497 2.55965 6.98532 3.25 6.98532H8.91177"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </span>
         <p>Manga</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Japon -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M50.7789 9.09164H9.21829C4.13528 9.09164 0 13.2269 0 18.3114V41.6901C0 46.7731 4.13528 50.9098 9.21829 50.9098H50.7803C55.8633 50.9098 60 46.7745 60 41.6901V18.3114C60 13.2283 55.8633 9.09164 50.7789 9.09164ZM55.731 41.6901H55.7281C55.7281 44.4194 53.5068 46.6407 50.7774 46.6407H9.21687C6.48753 46.6407 4.26762 44.418 4.26762 41.6901V18.3114C4.26762 15.582 6.48753 13.3607 9.21687 13.3607H50.7789C53.5082 13.3607 55.7295 15.582 55.7295 18.3114L55.731 41.6901Z"
+                fill="currentColor"></path>
+              <path
+                d="M29.9986 42.0601C36.6599 42.0601 42.0601 36.6599 42.0601 29.9986C42.0601 23.3372 36.6599 17.9371 29.9986 17.9371C23.3372 17.9371 17.9371 23.3372 17.9371 29.9986C17.9371 36.6599 23.3372 42.0601 29.9986 42.0601Z"
+                fill="currentColor"></path>
+            </svg>
+          </span>
+        </span>
         <p>Japon</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Triforce (Zelda) -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M43.2094 29.9494L56.4675 52.9125H29.9512L43.2094 29.9494ZM16.6931 29.9494L29.9512 52.9125H3.435L16.6931 29.9494ZM29.9512 6.98813L43.2094 29.9513H16.6931L29.9512 6.98813Z"
+                fill="currentColor"></path>
+            </svg>
+          </span>
+        </span>
         <p>Zelda</p>
       </li>
       <li class="hobby-item">
+        <span class="hobby-icon-wrapper">
+          <span class="hobby-icon" aria-hidden="true">
+            <!-- Chapeau de paille (One Piece) -->
+            <svg
+              viewBox="0 0 60 60"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M44.5 24.25C42.75 18.75 36.75 15 30 15C23.25 15 17.25 19 15.5 24.25C8.75 26 5 28.75 5 32.5C5 39.25 18 42.5 30 42.5C42 42.5 55 39.25 55 32.5C55 28.75 51.25 26 44.5 24.25ZM20 26.75C20.75 23 25 20 30 20C35 20 39.25 23 40 26.75C40 27 40 27.25 40 27.5V27.75C36.25 30 34 30 30 30C26 30 23.75 30 20 27.75V27.5C20 27.25 20 27 20 26.75ZM30 37.5C17 37.5 10 33.75 10 32.5C10 32.25 11 30.75 15.25 29.5C15.25 29.75 15.25 29.75 15.25 30C15.5 30.5 15.75 31 16.25 31.5C21.75 35 25.5 35 30 35C34.5 35 38.25 35 43.75 31.25C44.25 31 44.5 30.5 44.75 29.75C44.75 29.5 44.75 29.5 44.75 29.25C49 30.5 50 32 50 32.25C50 33.75 43 37.5 30 37.5Z"
+                fill="currentColor"></path>
+            </svg>
+          </span>
+        </span>
         <p>One Piece</p>
       </li>
     </ul>
@@ -157,8 +325,7 @@ import "../global.css";
           duration: 0.3,
           ease: "power2.out",
         });
-        gsap.to(item.querySelector("p"), {
-          color: "var(--primary-color)",
+        gsap.to(item.querySelector("p") as HTMLElement, {
           duration: 0.3,
           ease: "power2.out",
         });
@@ -172,8 +339,7 @@ import "../global.css";
           duration: 0.4,
           ease: "elastic.out(1, 0.5)",
         });
-        gsap.to(item.querySelector("p"), {
-          color: "var(--text-color)",
+        gsap.to(item.querySelector("p") as HTMLElement, {
           duration: 0.3,
           ease: "power2.out",
         });
@@ -203,16 +369,60 @@ import "../global.css";
     border-radius: 12px;
     transition: background-color 0.3s ease;
     transform-origin: center center;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    flex-direction: column;
+    /* plus de gap ici */
+    overflow: visible;
+    min-height: 80px;
+  }
+  .hobby-icon-wrapper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 0;
+    transition: height 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    width: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .hobby-item:hover .hobby-icon-wrapper {
+    height: 20px;
+  }
+  .hobby-icon {
+    opacity: 0;
+    color: var(--primary-color);
+    pointer-events: none;
+    transform: translateY(10px) scale(0.8);
+    transition:
+      opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    will-change: transform, opacity;
+    z-index: 2;
+    position: relative;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hobby-item:hover .hobby-icon {
+    opacity: 1;
+    animation: icon-bounce 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform: translateY(0) scale(1);
+  }
+  .hobby-item p {
+    margin-left: 0;
+    transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  .hobby-item:hover p {
+    transform: translateY(12px);
   }
 
   .hobby-item:hover {
     background-color: color-mix(in srgb, var(--primary-color) 8%, transparent);
-  }
-
-  .hobby-item p {
-    transition: color 0.3s ease;
-    font-weight: 500;
-    text-align: center;
   }
 
   /* Styles spéciaux pour certains hobbies */
@@ -220,8 +430,8 @@ import "../global.css";
     /* Nintendo */
     background: linear-gradient(
       135deg,
-      rgba(220, 38, 127, 0.05),
-      rgba(255, 255, 255, 0)
+      rgba(220, 38, 127, 0.12),
+      rgba(220, 38, 127, 0.03)
     );
   }
 
@@ -229,8 +439,8 @@ import "../global.css";
     /* Zelda */
     background: linear-gradient(
       135deg,
-      rgba(76, 175, 80, 0.05),
-      rgba(255, 255, 255, 0)
+      rgba(76, 175, 80, 0.12),
+      rgba(76, 175, 80, 0.03)
     );
   }
 
@@ -238,8 +448,8 @@ import "../global.css";
     /* One Piece */
     background: linear-gradient(
       135deg,
-      rgba(255, 152, 0, 0.05),
-      rgba(255, 255, 255, 0)
+      rgba(255, 152, 0, 0.12),
+      rgba(255, 152, 0, 0.03)
     );
   }
 

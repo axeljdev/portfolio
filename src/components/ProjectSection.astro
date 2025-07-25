@@ -4,7 +4,7 @@ import "../global.css";
 
 <section
   id="projects"
-  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem]"
+  class="px-5 h-[100svh] md:h-[80svh] flex flex-col justify-center md:px-[28rem] 2xl:px-[30rem] 3xl:px-[46rem] 4xl:px-[56rem]"
 >
   <div class="flex flex-col">
     <h2
@@ -14,44 +14,56 @@ import "../global.css";
     </h2>
     <ul class="flex flex-col md:grid md:grid-cols-2 gap-4">
       <li class="project-item">
-        <p class="font-bold project-name">CP Academy</p>
-        <span class="project-description"
-          >Site vitrine et CRM<a
-            href="https://cpacademy.fr"
-            target="_blank"
-            class="arrow-link"><div class="arrow-icon"></div></a
-          ></span
+        <a
+          href="https://cpacademy.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-link"
         >
+          <p class="font-bold project-name">CP Academy</p>
+          <span class="project-description"
+            >Site vitrine et CRM<div class="arrow-icon"></div></span
+          >
+        </a>
       </li>
       <li class="project-item">
-        <p class="font-bold project-name">Genieclim France</p>
-        <span class="project-description"
-          >Site et ERP<a
-            href="https://genieclimfrance.fr"
-            target="_blank"
-            class="arrow-link"><div class="arrow-icon"></div></a
-          ></span
+        <a
+          href="https://genieclimfrance.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-link"
         >
+          <p class="font-bold project-name">Genieclim France</p>
+          <span class="project-description"
+            >Site et ERP<div class="arrow-icon"></div></span
+          >
+        </a>
       </li>
       <li class="project-item">
-        <p class="font-bold project-name">Pernot Location</p>
-        <span class="project-description"
-          >Site vitrine<a
-            href="https://pernotlocation.fr"
-            target="_blank"
-            class="arrow-link"><div class="arrow-icon"></div></a
-          ></span
+        <a
+          href="https://pernotlocation.fr"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-link"
         >
+          <p class="font-bold project-name">Pernot Location</p>
+          <span class="project-description"
+            >Site vitrine<div class="arrow-icon"></div></span
+          >
+        </a>
       </li>
       <li class="project-item">
-        <p class="font-bold project-name">Giftwhisper</p>
-        <span class="project-description"
-          >Projet d'école<a
-            href="https://github.com/WildCodeSchool/2409-wns-rouge-giftwhisper"
-            target="_blank"
-            class="arrow-link"><div class="arrow-icon"></div></a
-          ></span
+        <a
+          href="https://github.com/WildCodeSchool/2409-wns-rouge-giftwhisper"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-link"
         >
+          <p class="font-bold project-name">Giftwhisper</p>
+          <span class="project-description"
+            >Projet d'école<div class="arrow-icon"></div></span
+          >
+        </a>
       </li>
     </ul>
   </div>
@@ -158,7 +170,9 @@ import "../global.css";
         );
 
       // Animation hover pour chaque projet
-      item.addEventListener("mouseenter", () => {
+      const projectLink = item.querySelector(".project-link");
+
+      projectLink?.addEventListener("mouseenter", () => {
         gsap.to(item, {
           x: 5,
           scale: 1.02,
@@ -178,7 +192,7 @@ import "../global.css";
         });
       });
 
-      item.addEventListener("mouseleave", () => {
+      projectLink?.addEventListener("mouseleave", () => {
         gsap.to(item, {
           x: 0,
           scale: 1,
@@ -238,10 +252,16 @@ import "../global.css";
     transform: translateX(-20px);
   }
 
-  .arrow-link {
-    display: inline-block;
+  .project-link {
+    display: block;
     text-decoration: none;
+    color: inherit;
     transition: transform 0.3s ease;
+  }
+
+  .project-link:hover {
+    text-decoration: none;
+    color: inherit;
   }
 
   .arrow-icon {

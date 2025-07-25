@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/global.css" />
-    <title>Astro Basics</title>
+    <title>Axel Janiak - Développeur Full Stack</title>
   </head>
   <body>
     <slot />
@@ -26,3 +26,39 @@
     height: 100%;
   }
 </style>
+
+<script>
+  // Initialiser le smooth scroll
+  function initSmoothScroll() {
+    // Activer le smooth scroll CSS natif
+    document.documentElement.style.scrollBehavior = "smooth";
+
+    // Améliorer l'expérience de scroll avec des transitions fluides
+    const style = document.createElement("style");
+    style.textContent = `
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Améliorer les transitions pour les éléments animés */
+      .project-item, .stack-item, .hobby-item {
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      }
+      
+      /* Optimiser le scroll sur mobile */
+      @media (max-width: 768px) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Initialiser quand le DOM est prêt
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSmoothScroll);
+  } else {
+    initSmoothScroll();
+  }
+</script>
