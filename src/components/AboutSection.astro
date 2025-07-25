@@ -53,7 +53,8 @@ import "../global.css";
     const scrollIndicator = document.querySelector(".scroll-indicator");
     const scrollIcon = scrollIndicator?.querySelector("svg");
     const scrollText = scrollIndicator?.querySelector(".scroll-text");
-    if (!scrollIndicator || !scrollIcon || !scrollText) return;
+    const aboutSection = document.getElementById("about");
+    if (!scrollIndicator || !scrollIcon || !scrollText || !aboutSection) return;
 
     // Animate text opacity (loop)
     gsap.to(scrollText, {
@@ -74,22 +75,32 @@ import "../global.css";
       ease: "sine.inOut",
     });
 
-    // Hide indicator on first scroll
-    function hideOnFirstScroll() {
-      if (window.scrollY > 100) {
-        gsap.to(scrollIndicator, {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: "power2.out",
-          onComplete: () => {
-            (scrollIndicator as HTMLElement).style.display = "none";
-          },
-        });
-        window.removeEventListener("scroll", hideOnFirstScroll);
-      }
-    }
-    window.addEventListener("scroll", hideOnFirstScroll);
+    // Affichage/masquage avec IntersectionObserver
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          gsap.to(scrollIndicator, {
+            opacity: 1,
+            y: 0,
+            pointerEvents: "auto",
+            duration: 0.4,
+            display: "flex",
+          });
+        } else {
+          gsap.to(scrollIndicator, {
+            opacity: 0,
+            y: 20,
+            pointerEvents: "none",
+            duration: 0.4,
+            onComplete: () => {
+              (scrollIndicator as HTMLElement).style.display = "none";
+            },
+          });
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(aboutSection);
   }
 
   if (document.readyState === "loading") {
@@ -118,7 +129,7 @@ import "../global.css";
 
   /* Scroll indicator styles */
   .scroll-indicator {
-    position: absolute;
+    position: fixed;
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
@@ -130,6 +141,8 @@ import "../global.css";
     opacity: 0.7;
     cursor: pointer;
     transition: opacity 0.3s ease;
+    z-index: 50;
+    pointer-events: auto;
   }
   .scroll-indicator:hover {
     opacity: 1;
